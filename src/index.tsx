@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
-
+import { Provider } from "react-redux";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { domain as auth0Domain, clientId, callbackUri } from "./auth.config";
+import store from "./app/store";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,12 +16,14 @@ ReactDOM.render(
       authorizationParams={{
         redirect_uri: callbackUri
       }}
-      /* Uncomment the following lines for better support  in browers like Safari where third-party cookies are blocked.
-         See https://auth0.com/docs/libraries/auth0-single-page-app-sdk#change-storage-options for risks. */
-      // cacheLocation="localstorage",
-      // useRefreshTokens={true}
+    /* Uncomment the following lines for better support  in browers like Safari where third-party cookies are blocked.
+       See https://auth0.com/docs/libraries/auth0-single-page-app-sdk#change-storage-options for risks. */
+    // cacheLocation="localstorage",
+    // useRefreshTokens={true}
     >
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")

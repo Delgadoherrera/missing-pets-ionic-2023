@@ -1,0 +1,25 @@
+/* iOS places the subtitle above the title */
+ion-card-header.ios {
+  display: flex;
+  flex-flow: column-reverse;
+}
+
+.IonCardMyPets {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*   align-items: center;
+ */
+}
+.itemButtonMyPetCard {
+  padding: 10%;
+}
+.imageCard {
+  height: 50vw;
+  width: 50vw;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 10%;
+  align-self: center;
+  }

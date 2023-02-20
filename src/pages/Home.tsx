@@ -1,44 +1,103 @@
 import {
+  IonButton,
   IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
-
-import { useAuth0 } from "@auth0/auth0-react";
-import "./Home.css";
-import LoginButton from "../components/LoginButton";
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonNote,
+} from '@ionic/react';
 import LogoutButton from "../components/LogoutButton";
-import Profile from "../components/Profile";
+import { useLocation } from 'react-router-dom';
+import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logOut, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import '../components/Menu.css';
+import "./Home.css";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from '../components/LoginButton';
 
-const Home: React.FC = () => {
-  const { isLoading, isAuthenticated } = useAuth0();
+interface AppPage {
+  url: string;
+  iosIcon: string;
+  mdIcon: string;
+  title: string;
+}
 
-  if (isLoading) {
-    return null;
-  }
+const appPages: AppPage[] = [
+  {
+    title: 'Mascotas perdidas',
+    url: '/page/Mascotas perdidas',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
+  },
+  {
+    title: 'Mascotas en adopcion',
+    url: '/page/Mascotas en adopcion',
+    iosIcon: paperPlaneOutline,
+    mdIcon: paperPlaneSharp
+  },
+  {
+    title: 'Encontre una mascota',
+    url: '/page/Encontre una mascota',
+    iosIcon: heartOutline,
+    mdIcon: heartSharp
+  },
+  {
+    title: 'Mis mascotas',
+    url: '/page/Mis mascotas',
+    iosIcon: archiveOutline,
+    mdIcon: archiveSharp
+  },
+  {
+    title: 'mansj',
+    url: '/page/Trash',
+    iosIcon: trashOutline,
+    mdIcon: trashSharp
+  },
+];
+
+const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+
+const Menu: React.FC = () => {
+  const location = useLocation();
+  const { isLoading, isAuthenticated, user } = useAuth0();
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Auth0 React Sample</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Auth0 React Sample</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <div className="container">
-          <Profile />
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-        </div>
+    <IonMenu contentId="main" type="overlay">
+      <IonContent>
+        {user !== undefined ? <IonList id="inbox-list">
+          <IonListHeader>missingPets</IonListHeader>
+          {appPages.map((appPage, index) => {
+            return (
+              <IonMenuToggle key={index} autoHide={false}>
+                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                  <IonLabel>{appPage.title}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+            );
+          })}
+          {isAuthenticated ? <LogoutButton />
+            : null}
+
+        </IonList> : <LoginButton />}
+
+
+        {/*   <IonList id="labels-list">
+          <IonListHeader>Labels</IonListHeader>
+          {labels.map((label, index) => (
+            <IonItem lines="none" key={index}>
+              <IonIcon slot="start" icon={bookmarkOutline} />
+              <IonLabel>{label}</IonLabel>
+            </IonItem>
+          ))}
+        </IonList> */}
       </IonContent>
-    </IonPage>
+
+    </IonMenu>
   );
 };
 
-export default Home;
+export default Menu;
