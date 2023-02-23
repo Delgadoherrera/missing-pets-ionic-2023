@@ -9,7 +9,10 @@ import EditPetDialog from "./EditPetDialog";
 import CoonfirmDeletePet from "./ConfirmDeletePet";
 import ConfirmarAdopcionDialog from "./ConfirmarAdopcionDialog";
 import ConfirmarQuitarAdopcionDialog from "./ConfirmarQuitarAdopcionDialog";
-
+import Modal from "./Modal";
+import { IonCard, IonIcon, IonItem } from "@ionic/react";
+import { buildOutline } from "ionicons/icons";
+import ActionSheet from './ActionSheet'
 const MenuDemo = ({ petToEdit, printToast, updatePets, setRefreshPets }) => {
   const menu = useRef(null);
   const toast = useRef(null);
@@ -24,8 +27,9 @@ const MenuDemo = ({ petToEdit, printToast, updatePets, setRefreshPets }) => {
   const hideDeleteDialog = () => {
     setdeletePetDialog(false);
   };
-  const hideEditDialog = () => {
-    setPetEdit(false);
+  const hideEditDialog = (i) => {
+    console.log("hidedialog", i);
+    setPetEdit(i);
   };
 
   const hideAdopcionDialog = () => {
@@ -40,7 +44,7 @@ const MenuDemo = ({ petToEdit, printToast, updatePets, setRefreshPets }) => {
       items: [
         {
           label: "Editar",
-          icon: "pi pi-refresh",
+          icon: 'circle',
           command: () => {
             setPetEdit(true);
           },
@@ -84,30 +88,43 @@ const MenuDemo = ({ petToEdit, printToast, updatePets, setRefreshPets }) => {
     <div>
       <Menu model={items} popup ref={menu} id="popup_menu" />
       <Toast ref={toast}></Toast>
-      <i
+      <IonIcon
+        icon={buildOutline}
+        onClick={(event) => menu.current.toggle(event)}
+        style={{
+          fontSize: "1.5rem",
+          boxShadow: "none",
+          border: "none",
+          marginTop:'35%'
+
+        }}
+      ></IonIcon>
+
+      {/*       <i
         onClick={(event) => menu.current.toggle(event)}
         aria-controls="popup_menu"
         aria-haspopup
         class="pi pi-cog iconEditMyPetMobile"
         style={{
-                    fontSize:'2rem',
-                    marginTop:'1%'
-                  }}
-      ></i>
+          fontSize: "1.5rem",
+          marginTop: "50%",
+        }}
+      ></i> */}
       {petEdit === true ? (
-        <EditPetDialog
+        <Modal
           petToEdit={petToEdit}
-          hideEditDialog={hideEditDialog}
+          setPetEdit={setPetEdit}
           updateEditComponent={updateEditComponent}
           printToast={printToast}
           updatePets={updatePets}
+          petEdit={petEdit}
         />
       ) : (
         <p> </p>
       )}
 
       {deletePetDialog === true ? (
-        <CoonfirmDeletePet
+        <ActionSheet
           hideDialog={hideDeleteDialog}
           petToDelete={petToEdit}
           updatePets={updatePets}

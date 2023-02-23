@@ -20,7 +20,7 @@ const LogoutButton: React.FC = () => {
     });
   };
 
-  return <IonButton onClick={doLogout}>Log out</IonButton>;
+  return <IonButton slot="end"  onClick={doLogout}>Cerrar sesión</IonButton>;
 };
 
 export default LogoutButton;

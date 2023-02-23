@@ -1,17 +1,16 @@
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
-/* import Index from "../components/WrapperMap";
- */ import { Dialog } from "primereact/dialog";
+
 import { Button } from "primereact/button";
 import axios from "axios";
 import "primeflex/primeflex.css";
-import MascotaEcontradaDialog from "./MascotaEcontradaDialog";
 import React, { useEffect, useState } from "react";
-import MascotaPerdidaDialog from "./MascotaPerdidaDialog";
 import { Redirect } from "react-router-dom";
 import { petSelected } from "../features/counter/counterSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { IonButton, IonItem } from "@ionic/react";
+import ModalMyPetFounded from "./ModalMyPetFounded";
 
 const InputSwitchDemo = ({
   petToSwitch,
@@ -23,13 +22,12 @@ const InputSwitchDemo = ({
 }) => {
   const [displayPosition, setDisplayPosition] = useState(false);
   const [position, setPosition] = useState("center");
-  const [petFound, setPetFound] = useState();
+  const [petFound, setPetFound] = useState(false);
   const [petToSearch, setPetToSearch] = useState(false);
   const selectPet = useSelector(petSelected);
   const dispatch = useDispatch();
 
   const sendLocation = [];
-
   const updateLocation = (f) => {
     let newData = {
       latitude: f.lat,
@@ -106,31 +104,19 @@ const InputSwitchDemo = ({
     }
     dialogFuncMap[`${name}`](false);
   };
-
-  const renderFooter = (name) => {
-    return (
-      <div className="footerDiv">
-        <Button
-          label="Cancelar"
-          /* icon="pi pi-times" */ onClick={() => onHide(name)}
-          className="mascotaPerdidaButtonDialog"
-        />
-        <Button
-          className="mascotaPerdidaButtonDialog"
-          value={idMascotaPerdida.idMascota}
-          label="Buscar"
-          /* icon="pi pi-check" */ onClick={(e) => enviarCoordenadas(name, e)}
-          autoFocus
-        />
-      </div>
-    );
-  };
   return (
-    <div className="card divInputSwitch">
+    <IonItem style={{bottom:'3%'}}>
+      {petFound === true ? (
+        <ModalMyPetFounded
+          petToSwitch={idMascotaPerdida}
+          setRefreshPets={setRefreshPets}
+          printToast={printToast}
+        />
+      ) : null}
       {petToSearch === true ? (
         <Redirect
           to="/page/Buscar a mi mascota"
-          idMascotaPerdida={petToSwitch}
+          petToSwitch={idMascotaPerdida}
           setPetToSearch={setPetToSearch}
           setRefreshPets={setRefreshPets}
           state={state}
@@ -152,33 +138,21 @@ const InputSwitchDemo = ({
       ) : (
         <p></p>
       )} */}
-      {petFound === true ? (
-        <MascotaEcontradaDialog
-          idMascotaPerdida={petToSwitch}
-          setRefreshPets={setRefreshPets}
-          printToast={printToast}
-        />
-      ) : (
-        <p> </p>
-      )}
+
       {petToSwitch.status === 0 ? (
-        <Button
-          label={` ¿${petToSwitch.nombre} se ha perdido? `}
+        <IonButton
           /* icon="pi pi-times" */ onClick={() => {
             setPetToSearch(true);
             dispatch(petSelected(petToSwitch || 10));
           }}
-          className="mascotaPerdidaButtonDialog"
-        />
+        >{` ¿${petToSwitch.nombre} se ha perdido? `}</IonButton>
       ) : (
         <p> </p>
       )}
       {petToSwitch.status === 1 ? (
-        <Button
-          label={` Encontré a ${petToSwitch.nombre} `}
+        <IonButton
           /* icon="pi pi-times" */ onClick={() => setPetFound(true)}
-          className="mascotaPerdidaButtonDialog bubbly-button"
-        />
+        >{` Encontré a ${petToSwitch.nombre} `}</IonButton>
       ) : (
         <p></p>
       )}
@@ -189,12 +163,11 @@ const InputSwitchDemo = ({
           /* icon="pi pi-times" */ onClick={() =>
             console.log("La mascota esta en adopcion")
           }
-          className="mascptaEnAdopcionButtonCardMyPets"
         />
       ) : (
         <p></p>
       )}
-    </div>
+    </IonItem>
   );
 };
 export default InputSwitchDemo;

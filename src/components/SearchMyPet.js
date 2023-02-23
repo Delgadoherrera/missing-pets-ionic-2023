@@ -10,9 +10,11 @@ import MapFindMyPet from "../components/MapFindMyPet";
 import { useSelector, useDispatch } from "react-redux";
 import { petSelected, newMarkerValue } from "../features/counter/counterSlice";
 import { PetServiceWeb } from "../services/PetService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 
 export function SearchMyPet({ position }) {
+  const [searchingPet, setSearchingPet]= useState(false)
   const myPet = useSelector(petSelected);
   const positionLost = useSelector(newMarkerValue);
   const searchThisPet = new PetServiceWeb();
@@ -29,12 +31,19 @@ export function SearchMyPet({ position }) {
       );
     }
     searchThisPet.searchMyPet(pet.idMascota, coords).then((data) => {
-      console.log('datos enviados',data);
+      setSearchingPet(true)
     });
   };
 
   return (
     <IonPage style={{ height: "60vh" }}>
+         {searchingPet === true ? (
+        <Redirect
+          to="/page/Mis mascotas"    
+        />
+      ) : (
+        <p></p>
+      )}
       <IonItem>
         Indica donde buscar a {myPet.payload.counter.petSelected.nombre}
       </IonItem>

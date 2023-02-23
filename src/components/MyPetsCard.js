@@ -8,7 +8,15 @@ import ButtonMascotaPerdida from "./MascotaPerdidaDialog";
 import ButtonMascotaEncontrada from "./MascotaEcontradaDialog";
 import MenuDemo from "../components/ButtonToolMyCardPet";
 import SwitchPetLost from "../components/SwitchPetLost";
-import { IonImg, IonThumbnail } from "@ionic/react";
+import {
+  IonImg,
+  IonItem,
+  IonThumbnail,
+  IonPage,
+  IonContent,
+  IonCard,
+} from "@ionic/react";
+import { height } from "@mui/system";
 
 export default function MediaCard({ pets, updatePets, printToast, user }) {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
@@ -35,53 +43,58 @@ export default function MediaCard({ pets, updatePets, printToast, user }) {
     );
   }, []);
   return (
-    <div className="componentMyPetsCard">
+    <IonContent>
       {pets.length < 0 ? <p> Mis mascotas</p> : <p></p>}
       {/*       <p className="tittleMyPets"> Mis mascotas</p> */}
       {pets.map((one, inex) => {
         return (
-          <Card className="cardSideBarMyPets">
-            <CardContent
-              className="cardSideBarMyPetsContent"
+          <IonItem>
+            <IonCard
+              className="avatarAndToolContainer"
               style={{
-                textAlign: "center",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
-                alignContent: "center",
+                alignItems: "center",
+                width: "100%",
+                height: "100%",
               }}
             >
               <p className="namePetMyPetCard">{one.nombre}</p>
+              <IonImg
+                alt="myPetAvatar"
+                src={`data:image/jpeg;base64,${one.fotoMascota}`}
+                className="avatarMyPets"
+                style={{
+                  width: "20vh",
+                  height: "20vh",
+                  objectFit: "cover",
+                  justifyContent: "center",
+                  borderRadius: "100px",
+                }}
+              />
 
-              <div className="avatarAndToolContainer">
-                <IonImg
-                  alt="myPetAvatar"
-                  src={`data:image/jpeg;base64,${one.fotoMascota}`}
-                  className="avatarMyPets"
-                  style={{ width: "100%" }}
-                />
-                <MenuDemo
-                  petToEdit={one}
-                  printToast={printToast}
-                  updatePets={updatePets}               
-                />
-                <SwitchPetLost
-                  user={user}
-                  state={coordenadas}
-                  idMascotaPerdida={one}
-                  updatePets={updatePets}
-                  printToast={printToast}
-                  petToSwitch={one}
-                />
-                <ButtonMascotaEncontrada
-                  user={user}
-                  idMascotaPerdida={one}
-                  updatePets={updatePets}
-                  printToast={printToast}
-                />
-              </div>
+              <MenuDemo
+                petToEdit={one}
+                printToast={printToast}
+                updatePets={updatePets}
+              />
+              <SwitchPetLost
+                user={user}
+                state={coordenadas}
+                idMascotaPerdida={one}
+                updatePets={updatePets}
+                printToast={printToast}
+                petToSwitch={one}
+              />
+              <ButtonMascotaEncontrada
+                user={user}
+                idMascotaPerdida={one}
+                updatePets={updatePets}
+                printToast={printToast}
+              />
+            </IonCard>
 
-              {/*          <div className="buttonContainerPetCard">
+            {/*          <div className="buttonContainerPetCard">
                 {one.status === 1 ? (
             
                 ) : (
@@ -94,10 +107,9 @@ export default function MediaCard({ pets, updatePets, printToast, user }) {
                   />
                 )}
               </div> */}
-            </CardContent>
-          </Card>
+          </IonItem>
         );
       })}
-    </div>
+    </IonContent>
   );
 }

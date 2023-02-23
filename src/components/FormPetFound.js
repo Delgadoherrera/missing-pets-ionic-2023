@@ -26,7 +26,6 @@ import {
   IonPage,
 } from "@ionic/react";
 
-
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -59,7 +58,7 @@ const App = () => {
   const position = useSelector(markerValue);
   const image = useSelector(imageValue);
   const uploadNewPet = new PetServiceWeb();
-  const {user}= useAuth0();
+  const { user } = useAuth0();
   const email = user.email;
 
   const dispatch = useDispatch();
@@ -75,6 +74,10 @@ const App = () => {
     defaultValues: {},
   });
 
+  useEffect(() => {
+    console.log("este es el valor del form", value);
+  }, [dispatch]);
+
   const file = value.payload.counter.file;
 
   const onSubmit = async (data) => {
@@ -82,11 +85,13 @@ const App = () => {
     if (position[0] === undefined) {
       return alert("indique en donde debemos buscar a su mascota");
     }
-    uploadNewPet.newPetFound(data, position, file, email).then((data) => {});
-    reset();
+    uploadNewPet.newPetFound(data, position, file, email).then((data) => {
+      dispatch(formValue({} || 10));
+      dispatch(imageValue({} || 10));
+      reset();
+    });
   };
   return (
-
     <form onSubmit={handleSubmit(onSubmit)}>
       <IonItem>
         <IonLabel></IonLabel>
@@ -94,6 +99,7 @@ const App = () => {
           render={({ field }) => (
             <IonSelect
               placeholder="Tipo"
+              slot='start'
               value={field.value}
               onIonChange={(e) => setValue("tipoMascota", e.detail.value)}
             >
@@ -120,6 +126,7 @@ const App = () => {
             <IonSelect
               placeholder="Peso"
               value={field.value}
+              slot='start'
               onIonChange={(e) => setValue("peso", e.detail.value)}
             >
               <IonSelectOption value="1kg/5kg">1kg/5kg</IonSelectOption>
@@ -148,6 +155,7 @@ const App = () => {
             <IonSelect
               placeholder="Color primario"
               value={field.value}
+              slot='start'
               onIonChange={(e) => setValue("colorPrimario", e.detail.value)}
             >
               <IonSelectOption value="NEGRO">Negro</IonSelectOption>
@@ -177,6 +185,7 @@ const App = () => {
             <IonSelect
               placeholder="Color secundario"
               value={field.value}
+              slot='start'
               onIonChange={(e) => setValue("colorSecundario", e.detail.value)}
             >
               <IonSelectOption value="NEGRO">Negro</IonSelectOption>
@@ -199,19 +208,22 @@ const App = () => {
         name="colorSecundario"
         as={<div style={{ color: "red" }} />}
       />
-      {/* === ION INPUT === */}
       <IonItem>
-        <IonLabel>Descripción</IonLabel>
-        <IonTextarea
-          {...register("descripcion", {
-            required: "This is a required field",
-          })}
+        <IonLabel></IonLabel>
+        <Controller
+          render={({ field }) => (
+            <IonTextarea
+              placeholder="Descripcion"
+              value={field.value}
+              slot={"start"}
+              onIonChange={(e) => setValue("descripcion", e.detail.value)}
+            ></IonTextarea>
+          )}
+          control={control}
+          name="descripcion"
+          rules={{ required: "This is a required field" }}
         />
       </IonItem>
-  {/*     <span>
-        formavalue:
-        {value > 0 ? value.payload.colorPrimario : null}
-      </span> */}
       <ErrorMessage
         errors={errors}
         name="descripcion"

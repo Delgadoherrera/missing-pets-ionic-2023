@@ -12,7 +12,7 @@ import {
 } from '@ionic/react';
 import LogoutButton from "../components/LogoutButton";
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logOut, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp,scanOutline, earthOutline,personCircleOutline, heartOutline, heartSharp, logOut, readerOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import '../components/Menu.css';
 import "./Home.css";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -29,32 +29,32 @@ const appPages: AppPage[] = [
   {
     title: 'Mascotas perdidas',
     url: '/page/Mascotas perdidas',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    iosIcon: readerOutline,
+    mdIcon: earthOutline
   },
   {
     title: 'Mascotas en adopcion',
     url: '/page/Mascotas en adopcion',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    iosIcon: heartSharp,
+    mdIcon: heartSharp
   },
   {
     title: 'Encontre una mascota',
     url: '/page/Encontre una mascota',
     iosIcon: heartOutline,
-    mdIcon: heartSharp
+    mdIcon: scanOutline
   },
   {
     title: 'Mis mascotas',
     url: '/page/Mis mascotas',
     iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    mdIcon: heartOutline
   },
   {
-    title: 'mansj',
-    url: '/page/Trash',
+    title: 'Mi perfil',
+    url: '/page/Mi perfil',
     iosIcon: trashOutline,
-    mdIcon: trashSharp
+    mdIcon: personCircleOutline
   },
 ];
 
@@ -68,7 +68,7 @@ const Menu: React.FC = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         {user !== undefined ? <IonList id="inbox-list">
-          <IonListHeader>missingPets</IonListHeader>
+          <IonListHeader></IonListHeader>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -82,7 +82,7 @@ const Menu: React.FC = () => {
           {isAuthenticated ? <LogoutButton />
             : null}
 
-        </IonList> : <LoginButton />}
+        </IonList> : null}
 
 
         {/*   <IonList id="labels-list">

@@ -18,7 +18,6 @@ export default function MascotaPerdida({
   const [position, setPosition] = useState("center");
 
   const dialogFuncMap = {
-
     displayPosition: setDisplayPosition,
   };
 
@@ -72,40 +71,36 @@ export default function MascotaPerdida({
   };
 
   return (
-    <div className="dialog-demo">
-      <div className="card containerMascotaEncontradaCardButton">
-        <Dialog
-          contentClassName="contentDialogMascotaEncontrada"
-          className="dialogMascotasEncontrada"
-          headerClassName="headerDialogMascotaEncontrada"
-          header={
-            <div>
-              <p className="">
-                {idMascotaPerdida.nombre} se quitará de la lista de mascotas
-                perdidas. Felicidades!
-              </p>
-              <div className="mascotaNombreEncontrada">
-                {/*   {idMascotaPerdida.nombre} */}
-              </div>
-            </div>
-          }
-          visible={displayPosition}
-          position={position}
-          modal
-          footer={renderFooter("displayPosition")}
-          onHide={() => onHide("displayPosition")}
-          draggable={false}
-          resizable={false}
-        >
-          {/*      <Index state={state} /> */}
+    <Dialog
+      contentClassName="contentDialogMascotaEncontrada"
+      className="dialogMascotasEncontrada"
+      headerClassName="headerDialogMascotaEncontrada"
+      header={
+        <div>
+          <p className="">
+            {idMascotaPerdida.nombre} se quitará de la lista de mascotas
+            perdidas. Felicidades!
+          </p>
+          <div className="mascotaNombreEncontrada">
+            {/*   {idMascotaPerdida.nombre} */}
+          </div>
+        </div>
+      }
+      visible={displayPosition}
+      position={position}
+      modal
+      footer={renderFooter("displayPosition")}
+      onHide={() => onHide("displayPosition")}
+      draggable={false}
+      resizable={false}
+    >
+      {/*      <Index state={state} /> */}
 
-          {/*        <img
+      {/*        <img
             alt="picturePets"
             className="imgEncontradaDialog"
             src={`data:image/jpeg;base64,${idMascotaPerdida.fotoMascota}`}
           /> */}
-        </Dialog>
-      </div>
-    </div>
+    </Dialog>
   );
 }

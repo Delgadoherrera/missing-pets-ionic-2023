@@ -29,7 +29,6 @@ export class PetServiceWeb {
           "Content-Type": "application/json",
         },
       })
-      .then((res) => res.json())
       .then((d) => d.data);
   }
 
@@ -76,5 +75,38 @@ export class PetServiceWeb {
         },
       }
     );
+  }
+
+  editPet(petToEdit, data) {
+    console.log("enviando mascota a editar", petToEdit, data);
+    return axios.post(
+      `https://backend.missingpets.art/mascotas/editarMascota/${petToEdit.idMascota}`,
+      {
+        body: {
+          file: "fotoMascota",
+          formData: data,
+        },
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  addMyPet(formData, file, email) {
+    return axios.post("https://backend.missingpets.art/mascota/register", {
+      body: {
+        file: file,
+        formData: formData,
+        user: email,
+      },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        "Content-Type": "application/json",
+      },
+    });
   }
 }

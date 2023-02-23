@@ -8,7 +8,9 @@ export const counterSlice = createSlice({
     newMarkerValue: [],
     formValue: {},
     myPets: {},
-    petSelected:{}
+    petSelected: {},
+    refreshPets: false,
+    closeModal: false
   },
   reducers: {
     imageValue: (state, action) => {
@@ -24,22 +26,33 @@ export const counterSlice = createSlice({
       ];
     },
     formValue: (state, action) => {
-      console.log(state,action)
       state.formValue = action.payload;
     },
     myPets: (state, action) => {
-      console.log('myPetsDispatched:',action.payload)
       state.myPets = action.payload;
     },
     petSelected: (state, action) => {
-      console.log('petSelectedDispatched',action.payload)
       state.petSelected = action.payload;
+    },
+    refreshPets: (state, action) => {
+      state.refreshPets = action.payload;
+    },
+    closeModal: (state, action) => {
+      state.closeModal = action.payload;
     },
   },
 });
 
-export const { imageValue, positionValue, newMarkerValue, formValue, myPets,petSelected } =
-  counterSlice.actions;
+export const {
+  imageValue,
+  positionValue,
+  newMarkerValue,
+  formValue,
+  myPets,
+  petSelected,
+  refreshPets,
+  closeModal
+} = counterSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -60,5 +73,8 @@ export const markerValue = (state) => state.counter.newMarkerValue;
 export const formValues = (state) => state.counter.formValue;
 export const allMyPets = (state) => state.counter.myPets;
 export const selectPet = (state) => state.counter.petSelected;
+export const refreshPet = (state) => state.counter.refreshPets;
+export const closeModals = (state) => state.counter.closeModal;
+
 
 export default counterSlice.reducer;

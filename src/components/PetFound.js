@@ -16,26 +16,30 @@ export function PetFound({ position }) {
       resultType: CameraResultType.Base64,
     });
     dispatch(imageValue(image || 10));
-    console.log(image.base64String);
   };
+
 
   return (
     <IonPage>
-      <IonHeader>Mapa</IonHeader>
+      <IonHeader></IonHeader>
       <MapPetFound position={position} />
-      {value.length > 1 ? (
-        <IonImg
-          className="imageCard"
-          src={`data:image/jpeg;base64,${value}`}
-          style={{
-            width: "100vw",
-            height: "15vh",
-            objectFit: "contain",
-            marginTop: "2%",
-            zoom: "100%",
-          }}
-        />
+
+      {value ? (
+        value.length > 1 ? (
+          <IonImg
+            className="imageCard"
+            src={`data:image/jpeg;base64,${value}`}
+            style={{
+              width: "100vw",
+              height: "15vh",
+              objectFit: "contain",
+              marginTop: "2%",
+              zoom: "100%",
+            }}
+          />
+        ) : null
       ) : null}
+
       <IonItem>
         <button onClick={() => takePicture()}>CARGAR IMAGEN </button>
       </IonItem>

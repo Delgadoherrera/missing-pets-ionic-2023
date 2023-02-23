@@ -5,10 +5,11 @@ import "primeflex/primeflex.css";
 import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
-
-const DialogDemo = ({ petToDelete, updatePets, printToast, hideDialog }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { formValue } from "../features/counter/counterSlice";
+const DialogDemo = ({ petToDelete, hideDialog }) => {
   const [displayResponsive, setDisplayResponsive] = useState(true);
-  const [position, setPosition] = useState("center");
+  const dispatch = useDispatch();
 
   const fetchDelete = (e) => {
     fetch(
@@ -23,13 +24,7 @@ const DialogDemo = ({ petToDelete, updatePets, printToast, hideDialog }) => {
       .then((res) => res.json())
       .catch((error) => console.error("Error:", error))
       .then(() => {
-        printToast({
-          severity: "warn",
-          summary: "Elimiar",
-          detail: "Mascota eliminada",
-          life: 3000,
-        });
-        updatePets();
+        dispatch(formValue({} || 10));
       });
   };
 
@@ -39,7 +34,7 @@ const DialogDemo = ({ petToDelete, updatePets, printToast, hideDialog }) => {
 
   const onHide = (name) => {
     dialogFuncMap[`${name}`](false);
-    hideDialog()
+    hideDialog();
   };
 
   const renderFooter = (name) => {

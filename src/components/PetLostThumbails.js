@@ -7,10 +7,11 @@ import KnobDistanceLostPet from "./KnobDistanceLostPet";
 import { Button } from "primereact/button";
 import axios from "axios";
 import ContactoMascotaEncontrada from "./ContactoMascotaEncontrada";
-import { IonButton } from "@ionic/react";
+import { IonButton, IonCard } from "@ionic/react";
+import ModalMyPet from "./ModalItsMyPet";
 
 import { useAuth0 } from "@auth0/auth0-react";
-const DataScrollerLoaderDemo = ({ manageViews, refreshPets }) => {
+const DataScrollerLoaderDemo = ({}) => {
   const [pets, setPets] = useState([]);
   const [state, setState] = useState({
     longitude: 0,
@@ -20,50 +21,43 @@ const DataScrollerLoaderDemo = ({ manageViews, refreshPets }) => {
   const [petDetail, setpetFoundDetail] = useState({});
   const [petDistance, setPetDistance] = useState(4);
   const { loginWithRedirect } = useAuth0();
-
   const { user } = useAuth0();
 
-  console.log("usuario", user);
-
+  console.log("petDetail", petDetail);
   const ds = useRef(null);
-
-  useEffect(
-    () => {
-      navigator.geolocation.getCurrentPosition(
-        async function (position) {
-          await axios
-            .get("https://backend.missingpets.art/mascotas/mascotasPerdidas", {
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                longitude: position.coords.longitude,
-                latitude: position.coords.latitude,
-                distanceSlider: petDistance,
-              },
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async function (position) {
+        await axios
+          .get("https://backend.missingpets.art/mascotas/mascotasPerdidas", {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              longitude: position.coords.longitude,
+              latitude: position.coords.latitude,
               distanceSlider: petDistance,
-            })
-            .then((res) => {
-              /*       res.json() */
-              setPets(res.data.data);
-            });
-
-          setState({
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude,
+            },
+            distanceSlider: petDistance,
+          })
+          .then((res) => {
+            /*       res.json() */
+            setPets(res.data.data);
           });
-        },
-        function (error) {
-          console.error("Error Code = " + error.code + " - " + error.message);
-        },
-        {
-          enableHighAccuracy: true,
-        }
-      );
-    },
-    [petDistance],
-    [refreshPets]
-  );
+
+        setState({
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+        });
+      },
+      function (error) {
+        console.error("Error Code = " + error.code + " - " + error.message);
+      },
+      {
+        enableHighAccuracy: true,
+      }
+    );
+  }, [petDistance]);
   const petFounded = (data) => {
     setDialogFounded(true);
     setpetFoundDetail(data.e);
@@ -74,20 +68,38 @@ const DataScrollerLoaderDemo = ({ manageViews, refreshPets }) => {
       <p className="tittleMascotasPerdidas"></p>
       <KnobDistanceLostPet setPetDistance={setPetDistance} />
       {pets.length > 0 ? (
-        <div className="contentPetThumbails">
+        <div
+          className="contentPetThumbails"
+        >
+          {user !== undefined ? (
+            <>
+              {dialogFounded === true ? (
+                <ModalMyPet
+                  petToEdit={petDetail}
+                  setDialogFounded={setDialogFounded}
+                />
+              ) : null}
+            </>
+          ) : (
+            <p></p>
+          )}
           {pets.map((one, key) => {
             return (
-              <div
+              <IonCard
                 className="petCardContentThumbail"
                 style={{ textAlign: "center" }}
               >
-                <div className="divPetImagePetLostThumbail">
-                  <img
-                    className="petImageThumbail"
-                    src={`data:image/jpeg;base64,${one.fotoMascota}`}
-                    alt="myPet"
-                  />
-                </div>
+                <img
+                  className="petImageThumbail"
+                  src={`data:image/jpeg;base64,${one.fotoMascota}`}
+                  alt="myPet"
+                  style={{
+                    width: "30vh",
+                    height: "30vh",
+                    objectFit: "cover",
+                    borderRadius: "2%",
+                  }}
+                />
                 <div className="cardLostPetContentData">
                   <div>
                     <p className="petCardContentThumbailName"> {one.nombre}</p>
@@ -141,22 +153,7 @@ const DataScrollerLoaderDemo = ({ manageViews, refreshPets }) => {
                 ) : (
                   <p></p>
                 )}
-
-                {user !== undefined ? (
-                  <>
-                    {dialogFounded === true ? (
-                      <ContactoMascotaEncontrada
-                        idMascotaPerdida={petDetail}
-                        setDialog={setDialogFounded}
-                      />
-                    ) : (
-                      console.log("logueate")
-                    )}
-                  </>
-                ) : (
-                  <p></p>
-                )}
-              </div>
+              </IonCard>
             );
           })}
         </div>

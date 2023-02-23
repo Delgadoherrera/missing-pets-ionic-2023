@@ -59,7 +59,6 @@ const App: React.FC = () => {
   };
   useEffect(() => {
     printCurrentPosition();
-    console.log(position);
   }, []);
 
   return (
@@ -69,10 +68,10 @@ const App: React.FC = () => {
           <Home />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to="/page/Inbox" />
+              <Redirect to="/page/Home" />
             </Route>
             <Route path="/page/:name" exact={true}>
-              <Page position={position} />
+              <Page position={position} user={user} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

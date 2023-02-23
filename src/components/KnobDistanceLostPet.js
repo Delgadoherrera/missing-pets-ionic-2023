@@ -23,7 +23,6 @@ const KnobDistanceLostPet = ({ setPetDistance }) => {
         >
           Buscar
         </IonButton>
-        <IonImg ></IonImg>
       </IonItem>
     </IonItem>
   );

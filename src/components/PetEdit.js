@@ -11,7 +11,7 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 import { InputTextarea } from "primereact/inputtextarea";
 import { BottomNavigation } from "@mui/material";
-
+import PetEditForm from "./PetEditForm";
 export default function ReactFinalFormDemo({
   petToEdit,
   update,
@@ -172,147 +172,10 @@ export default function ReactFinalFormDemo({
         alt="myPetImg"
         src={`data:image/jpeg;base64,${petToEdit.fotoMascota}`}
         className="imgPetEditDialog"
+        style={{ width: "30vh", height: "30vh", objectFit: "cover" }}
       />
       <div className="PetFoundFormContainer petEditContainerForm">
-        <Form
-          onSubmit={onSubmit}
-          initialValues={{
-            nombre: petToEdit.nombre,
-            colorPrimario: petToEdit.colorPrimario,
-            colorSecundario: petToEdit.colorSecundario,
-            pesoAproximado: petToEdit.pesoAproximado,
-            descripcionMascota: petToEdit.descripcion,
-            tipoMascota: petToEdit.tipoMascota,
-          }}
-          validate={validate}
-          render={({ handleSubmit }) => (
-            <form onSubmit={handleSubmit} className="p-fluid">
-              <Field
-                name="nombre"
-                render={({ input, meta }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <InputText
-                        id="nombre"
-                        {...input}
-                        maxLength={11}
-                        className={classNames({
-                          "p-invalid": isFormFieldValid(meta),
-                        })}
-                      />
-                      <label
-                        htmlFor="nombre"
-                        maxLength={15}
-                        className={classNames({
-                          "p-error": isFormFieldValid(meta),
-                        })}
-                      >
-                        Nombre
-                      </label>
-                    </span>
-                    {getFormErrorMessage(meta)}
-                  </div>
-                )}
-              />
-              <Field
-                name="descripcionMascota"
-                render={({ input }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <InputTextarea
-                        className="petDialogTextArea"
-                        maxLength={70}
-                        id="descripcionMascota"
-                        {...input}
-                        placeholder={
-                          "Descripcion precisa, 50 caracteres maximo"
-                        }
-                      />
-                      <label htmlFor="descripcionMascota">
-                        Descripcion de tu mascota
-                      </label>
-                    </span>
-                  </div>
-                )}
-              />
-              <Field
-                name="tipoMascota"
-                render={({ input }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <Dropdown
-                        id="tipoMascota"
-                        {...input}
-                        options={petType}
-                        optionLabel="label"
-                      />
-                      <label htmlFor="tipoMascota">Tipo de mascota</label>
-                    </span>
-                  </div>
-                )}
-              />
-              <Field
-                name="pesoAproximado"
-                render={({ input }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <Dropdown
-                        id="pesoAproximado"
-                        {...input}
-                        options={pesoAproximado}
-                        optionLabel="label"
-                      />
-                      <label htmlFor="pesoAproximado">
-                        Peso aproximado de la mascota
-                      </label>
-                    </span>
-                  </div>
-                )}
-              />
-
-              <Field
-                name="colorPrimario"
-                render={({ input }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <Dropdown
-                        id="colorPrimario"
-                        {...input}
-                        options={petColor}
-                        optionLabel="label"
-                      />
-                      <label htmlFor="colorPrimario">Color primario</label>
-                    </span>
-                  </div>
-                )}
-              />
-              <Field
-                name="colorSecundario"
-                render={({ input }) => (
-                  <div className="field petEditForm">
-                    <span className="p-float-label">
-                      <Dropdown
-                        id="colorSecundario"
-                        {...input}
-                        options={petColor}
-                        optionLabel="label"
-                      />
-                      <label htmlFor="colorSecundario">Color secundario</label>
-                    </span>
-                  </div>
-                )}
-              />
-
-              <div>
-                <Button
-                  type="submit"
-                  label="Editar datos de mi mascota"
-                  className="editPetFetchButton petEditForm" /* onClick={onSubmit} */
-                />
-              </div>
-            </form>
-          )}
-        />
+        <PetEditForm petToEdit={petToEdit}></PetEditForm>
       </div>
     </div>
   );

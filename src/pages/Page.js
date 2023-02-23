@@ -7,21 +7,21 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonImg,
 } from "@ionic/react";
 import { useParams } from "react-router";
 import "./Page.css";
-import { useEffect, useState } from "react";
-import { Geolocation } from "@capacitor/geolocation";
 import { PetFound } from "../components/PetFound";
 import PetLostThumbails from "../components/PetLostThumbails";
 import AdoptionPets from "../components/AdoptionPets";
 import MyPets from "../components/MyPets";
-import { useAuth0 } from "@auth0/auth0-react";
 import { SearchMyPet } from "../components/SearchMyPet";
+import homeImg from "../img/background.jpg";
+import LoginButton from "../components/LoginButton";
+import MyProfile from "../components/MyProfile";
 
-const Page = ({ position }) => {
+const Page = ({ position, user }) => {
   const { name } = useParams();
-  const { user } = useAuth0();
   return (
     <IonPage>
       <IonHeader>
@@ -67,7 +67,29 @@ const Page = ({ position }) => {
 
       {name === "Buscar a mi mascota" ? (
         <IonContent>
-          <SearchMyPet position={position}  />
+          <SearchMyPet position={position} />
+        </IonContent>
+      ) : (
+        <></>
+      )}
+
+      {name === "Mi perfil" ? (
+        <IonContent>
+          {user ? null : <LoginButton />}
+          <MyProfile user={user} />
+        </IonContent>
+      ) : (
+        <></>
+      )}
+      {name === "Home" ? (
+        <IonContent>
+          <IonImg src={homeImg} alt="homeBackgroundPicture"></IonImg>
+
+          {user ? null : (
+            <>
+              <LoginButton />
+            </>
+          )}
         </IonContent>
       ) : (
         <></>
